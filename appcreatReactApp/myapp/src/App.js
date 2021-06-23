@@ -5,7 +5,7 @@ import Pagina from './pages/pagina'
 function App() {
   return (
     <div className="App">
-      <Pagina/>
+      <Pagina  title='Pets' entity = 'pets' />
     </div>
   );
 }

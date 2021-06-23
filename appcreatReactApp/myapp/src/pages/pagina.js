@@ -4,6 +4,7 @@ import Modal from '../components/Modal/Modal.js'
 import Table from '../components/Table/index.js'
 import ActionsMenu from '../components/ActionsMenu/index.js'
 import './pagina.css'
+import {listarEntidad} from '../servicio'
 
 class Pagina extends Component{
 
@@ -11,6 +12,7 @@ class Pagina extends Component{
         super(props)
         this.state = {
             mostrarModal : true,
+            entity :  []
         }
     }
 
@@ -20,33 +22,34 @@ class Pagina extends Component{
     }
 
     // en la parte de abajp se pasa el this.cambiarModal -> proque se debe especificar de que clase viene el metodo
+    
+    /*listEntity = () => {
+        const {entity} = this.props
+    }*/
+
+    list = async () => {
+        const {entity} = this.props 
+        const entities = await listarEntidad({entity})
+        this.setState({entity: entities})
+    }
+
+    componentDidMount() {
+        this.list()
+    }
 
     render(){
+        const {title = 'Empty Page'} = this.props // destructuracion donde se 
         return (
         <>
         <div classNameName="container-fluid">
 
                 <Nav/>        
 
-                {this.state.mostrarModal && <ActionsMenu cambiarModal= {this.cambiarModal}/>}
-
-                {
-                    //arriba tenia lo del modal pero no funciona correctamente, igual con boots
-                    //strap a horra tiempo
-                    //console.log('la moda hp', this.state.mostrarModal)
-                    //{this.state.mostrarModal && <ActionsMenu cambiarModal= {this.cambiarModal}/>}
-                }
-                
-
+                {this.state.mostrarModal && <ActionsMenu cambiarModal= {this.cambiarModal} titulo= {title}/>}
 
                 <Modal cambiarModal= {this.cambiarModal}/> 
-               {
-                   /**s
-                    * { this.state.mostrarModal && <Modal/> } aqui es el problema
-                    */
-               }
 
-                <Table/>
+                <Table entity={this.state.entity}/>
 
             </div>
         </>    
