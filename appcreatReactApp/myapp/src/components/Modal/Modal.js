@@ -5,9 +5,9 @@ import ModalFooter from './ModalFooter'
 import Input from '../Input'
 
 
-export default function Modal({cambiarModal = () => {} }){
+export default function Modal({cambiarModal = () => {}, handleInput = () => {} }){
 
-
+    console.log('handle en modal',{handleInput})
 
     return <>       
     
@@ -18,7 +18,7 @@ export default function Modal({cambiarModal = () => {} }){
                     <div className="modal-body">
                         <form id="form">
                             
-                            <Select options={[{value:"Dog",tag:"Dog"},
+                            <Select onChange={handleInput} options={[{value:"Dog",tag:"Dog"},
                                                 {value:'Cat',tag:'Cat'},
                                                 {value:'Bird',tag:'Bird'},
                                                 {value:'Other',tag:'Other'}
@@ -27,10 +27,10 @@ export default function Modal({cambiarModal = () => {} }){
                             />
                             <div className="row">
                                 <div className="col">
-                                    <Input type= "text" fieldName = "petname"/>                                    
+                                    <Input onInput={handleInput} type= "text" fieldName = "petname"/>                                    
                                 </div>
                                 <div className="col">
-                                    <Input type= "text" fieldName = "owner"/>       
+                                    <Input onInput={handleInput} type= "text" fieldName = "owner"/>       
                                 </div>
                             </div>
                                 

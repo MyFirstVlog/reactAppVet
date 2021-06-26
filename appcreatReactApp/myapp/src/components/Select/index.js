@@ -1,11 +1,12 @@
 import React from "react";
 
-export default function Select({options = [], fieldName='empty'}) {
-  console.log(options.options)
+export default function Select({options = [], fieldName='empty', onChange = () => {}}) {
+  console.log('onChange', {options})
   return (
     <div className="row">
       <div className="col">
         <select
+          onChange= {onChange}
           id="kind"
           className="form-select"
           aria-label="Default select example"
@@ -19,7 +20,7 @@ export default function Select({options = [], fieldName='empty'}) {
           }
           {
           options.map(({tag}, index)=>(              
-              <option keys={index} value={index}>{tag}</option>
+              <option keys={index} value={tag}>{tag}</option>
           ))}
         </select>
       </div>

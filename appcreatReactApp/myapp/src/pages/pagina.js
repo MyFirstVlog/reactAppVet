@@ -4,7 +4,7 @@ import Modal from '../components/Modal/Modal.js'
 import Table from '../components/Table/index.js'
 import ActionsMenu from '../components/ActionsMenu/index.js'
 import './pagina.css'
-import {listarEntidad} from '../servicio'
+import {listarEntidad, crearEntidad} from '../servicio'
 
 class Pagina extends Component{
 
@@ -12,7 +12,8 @@ class Pagina extends Component{
         super(props)
         this.state = {
             mostrarModal : true,
-            entity :  []
+            entity :  [],
+            object : {}
         }
     }
 
@@ -33,6 +34,15 @@ class Pagina extends Component{
         this.setState({entity: entities})
     }
 
+    handleInput = (e) => {
+        const {target} = e
+        console.log({target, e})
+    }
+
+    createEntity(){
+
+    } 
+
     componentDidMount() {
         this.list()
     }
@@ -47,7 +57,7 @@ class Pagina extends Component{
 
                 {this.state.mostrarModal && <ActionsMenu cambiarModal= {this.cambiarModal} titulo= {title}/>}
 
-                <Modal cambiarModal= {this.cambiarModal}/> 
+                <Modal handleInput={this.handleInput} cambiarModal= {this.cambiarModal}/> 
 
                 <Table entity={this.state.entity}/>
 
