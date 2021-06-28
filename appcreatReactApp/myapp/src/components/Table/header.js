@@ -7,7 +7,7 @@ export default function Header(props){
                 <tr>
                     <th scope="col">#</th>
                     {
-                        props.columns.map((col)=>(<th scope="col">{col}</th>))
+                        props.columns.map((col,index)=>(<th key={index} scope="col">{col}</th>))
                     }
                     <th scope="col"/>
                 </tr>

@@ -1,9 +1,10 @@
 import React from'react'
+import {Link} from 'wouter'
 
 export default function Nav(){
     return(<nav className="navbar navbar-expand-lg navbar-dark bg-primary"> 
         <div className="container-fluid">
-            <a className="navbar-brand" href="#">Veterinaria</a>
+            <Link className="navbar-brand" to="/">Vet</Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
             </button>
@@ -11,16 +12,16 @@ export default function Nav(){
             <div className="collapse navbar-collapse" id="navbarColor02">
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                    <a className="nav-link active" aria-current="page" href="/index.html">Pets</a>
+                    <Link className="nav-link active" aria-current="page" to="/">Pets</Link>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/vets.html">Vets</a>
+                    <Link className="nav-link" to="/vets">Vets</Link>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/consults.html">Consults</a>
+                    <Link className="nav-link" to="/owners">Owners</Link>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/owners.html">Owners</a>
+                    <Link className="nav-link" to="/consults">Consults</Link>
                 </li>
                 </ul>               
 
