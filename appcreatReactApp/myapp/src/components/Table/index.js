@@ -2,7 +2,13 @@ import React, { useState } from 'react'
 import Header from './header'
 import Row from './row'
 
-export default function Table({deleteEntity= () => {},entity= [], editEntity = () => {}}){
+export default function Table(
+  {deleteEntity= () => {},
+  entity= [], 
+  editEntity = () => {},
+  columns = []
+})
+  {
   /*const [mascotas, setMascotas] = useState([{
     kind:'bird', name: 'Jesus', owner:'Aleximandro'
   },
@@ -11,14 +17,20 @@ export default function Table({deleteEntity= () => {},entity= [], editEntity = (
   }
 ])*/
 
-  const columns = entity.length > 0 ? Object.keys(entity[0]) : []
+  console.log('col',columns)
     return <>
         <table  className="table table-dark table-stripped table-hover">
             <Header columns = {columns}/>            
               <tbody id="list-pets">              
                 {                  
                   entity.map((eachEntity, index)=>
-                   <Row key={index} deleteEntity= {deleteEntity} entity={eachEntity} index={index} editEntity = {editEntity}/>
+                   <Row key={index}
+                    deleteEntity= {deleteEntity} 
+                    entity={eachEntity} 
+                    index={index} 
+                    editEntity = {editEntity}
+                    column = {columns}
+                    />
                 )
                 }
               </tbody>

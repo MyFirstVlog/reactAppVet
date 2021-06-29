@@ -7,7 +7,7 @@ export default function Select({method,value='', options = [], fieldName='empty'
         <div className="col">
           <select
             onChange= {onChange}
-            id="kind"
+            id={fieldName}
             className="form-select"
             name={fieldName}
             value=''

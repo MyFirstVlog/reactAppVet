@@ -4,9 +4,13 @@ import Select from '../Select'
 import ModalFooter from './ModalFooter'
 import Input from '../Input'
 
-
+const typesPets = [{value:"Dog",tag:"Dog"},
+{value:'Cat',tag:'Cat'},
+{value:'Bird',tag:'Bird'},
+{value:'Other',tag:'Other'}
+]
                 
-export default function Modal({method,object = {}, cambiarModal = () => {}, handleInput = () => {} , createEntity = () => {}}){
+export default function Modal({children = [] , cambiarModal = () => {}, createEntity = () => {}}){
 
     
 
@@ -17,13 +21,25 @@ export default function Modal({method,object = {}, cambiarModal = () => {}, hand
                 <div className="modal-content">   
                     <ModalHeader cambiarModal= {cambiarModal}/>
                     <div className="modal-body">
-                        <form id="form">
-                            
-                            <Select onChange={handleInput} options={[{value:"Dog",tag:"Dog"},
-                                                {value:'Cat',tag:'Cat'},
-                                                {value:'Bird',tag:'Bird'},
-                                                {value:'Other',tag:'Other'}
-                                                ]} 
+                        <form id="form">                        
+                            <div className="row">
+                                {children}
+                            </div>
+                                
+                        </form>
+                    </div>
+
+                    <ModalFooter cambiarModal= {cambiarModal} createEntity={createEntity} />
+                </div>
+             </div>
+        </div>
+    </>
+}   
+
+/**
+ {children} in a div row
+
+<Select onChange={handleInput} options={typesPets} 
                                     fieldName='kind'
                                     placeholder='Kind Of Animal'
                                     method={method}
@@ -37,13 +53,5 @@ export default function Modal({method,object = {}, cambiarModal = () => {}, hand
                                     <Input method={method} value={object.owner} onInput={handleInput} type= "text" fieldName = "owner" placeholder= 'Owner'/>       
                                 </div>
                             </div>
-                                
-                        </form>
-                    </div>
 
-                    <ModalFooter createEntity={createEntity} />
-                </div>
-             </div>
-        </div>
-    </>
-}   
+ */

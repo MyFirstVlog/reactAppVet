@@ -6,6 +6,52 @@ import ActionsMenu from '../components/ActionsMenu/index.js'
 import './pagina.css'
 import {listarEntidad, crearEntidad, eliminarEntidad} from '../servicio'
 import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
+import Select from '../components/Select/index.js'
+import Input from '../components/Input/index.js'
+
+const typesPets = [{value:"Dog",tag:"Dog"},
+{value:'Cat',tag:'Cat'},
+{value:'Bird',tag:'Bird'},
+{value:'Other',tag:'Other'}
+]
+
+const FieldComponent = ({handleInput=()=>{}, object={}, method='', fieldName= '' })=>{
+    switch(fieldName){
+        case 'kind':
+        case 'country':
+        case 'pet': 
+        case 'vet': 
+            return (
+                <Select 
+                    fieldName={fieldName}
+                    onChange={handleInput} 
+                    options={typesPets} 
+                    placeholder= {fieldName}
+                    method={method}
+                    value = {object[fieldName]}
+                />
+            )
+        case 'name':
+        case 'owner': 
+        case 'lName': 
+        case 'id':       
+        case 'historia': 
+        case 'diagnosis': 
+            return (
+                <Input 
+                    method={method} 
+                    value={object[fieldName]} 
+                    onInput={handleInput} 
+                    type= "text" 
+                    fieldName = {fieldName}
+                    placeholder= {fieldName}
+                />
+            )
+        
+    }
+       
+
+}
 
 class Pagina extends Component{
 
@@ -16,7 +62,8 @@ class Pagina extends Component{
             entity :  [],
             object : {},
             idObject : null,
-            method : 'POST'
+            method : 'POST',
+            columns:[]
         }
     }
 
@@ -34,7 +81,11 @@ class Pagina extends Component{
     list = async () => {
         const {entity} = this.props 
         const entities = await listarEntidad({entity})
-        this.setState({entity: entities})
+        let columns = []
+        if(Array.isArray(entities) && entities.length > 0){
+            columns = Object.keys(entities[0]) || [] 
+        }
+        this.setState({entity: entities, columns})
     }
 
     handleInput = (e) => {
@@ -81,6 +132,8 @@ class Pagina extends Component{
 
     render(){
         const {title = 'Empty Page'} = this.props // destructuracion donde se 
+        const {columns} = this.state
+        console.log(title, columns)
         return (
         <>
         <div className="container-fluid">
@@ -89,9 +142,19 @@ class Pagina extends Component{
 
                 {this.state.mostrarModal && <ActionsMenu cambiarModal= {this.cambiarModal} titulo= {title}/>}
 
-                <Modal method={this.state.method} object= {this.state.object} handleInput={this.handleInput} cambiarModal= {this.cambiarModal} createEntity={this.createEntity}/> 
+                <Modal title={this.props.title} cambiarModal= {this.cambiarModal} createEntity={this.createEntity}>
+                    {columns.map((column,index)=>{ 
+                         
+                      return <FieldComponent key={index} handleInput={this.handleInput} object={this.state.object} method={this.state.method} fieldName = {column}/>
+                    }
+                    )}
+                    
+                
+                     
+                    
+                </Modal> 
 
-                <Table deleteEntity={this.deleteEntity} editEntity = {this.editEntity} entity={this.state.entity}/>
+                <Table columns = {this.state.columns} deleteEntity={this.deleteEntity} editEntity = {this.editEntity} entity={this.state.entity}/>
 
             </div>
         </>    
@@ -104,3 +167,50 @@ class Pagina extends Component{
 }
 export default Pagina
 
+
+
+/**
+ * 
+ * const fieldComponent = ({handleInput=()=>{}, object={}, column='', method='', fieldName= '' })=> ({
+    
+ *  const componentes = {
+        kind: (<Select 
+            fieldName={fieldName}
+            onChange={handleInput} 
+            options={typesPets} 
+            placeholder= {fieldName}
+            method={method}
+            value = {object[fieldName]}
+        />),
+            name:Input,
+            owner: Input,
+            lName: Input,
+            id: Input,           
+            historia: Input,
+            diagnosis: Input
+    } 
+    
+    return componentes[fieldName]
+ */
+
+
+    /**
+     * 
+     * 
+     * const fieldComponent =  {
+    kind: Select,
+    name:Input,
+    owner: Input,
+    lName: Input,
+    id: Input,
+    country: Select,
+    pet: Select,
+    vet: Select,
+    historia: Input,
+    diagnosis: Input
+
+}
+
+Asi no s eputea
+     * 
+     */
