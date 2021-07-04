@@ -9,27 +9,44 @@ import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import Select from '../components/Select/index.js'
 import Input from '../components/Input/index.js'
 
-const typesPets = [{value:"Dog",tag:"Dog"},
-{value:'Cat',tag:'Cat'},
-{value:'Bird',tag:'Bird'},
-{value:'Other',tag:'Other'}
-]
+const opcionesIniciales = {
+    kind:[{value:"Dog",tag:"Dog"},
+    {value:'Cat',tag:'Cat'},
+    {value:'Bird',tag:'Bird'},
+    {value:'Other',tag:'Other'}
+    ],
+    country:[{value:"Colombia",tag:"Colombia"},
+    {value:'Costa Rica',tag:'Costa Rica'},
+    {value:'Netherlands',tag:'Netherlands'},
+    {value:'USA',tag:'USA'}
+    ]
+}
 
-const FieldComponent = ({handleInput=()=>{}, object={}, method='', fieldName= '' })=>{
+
+const FieldComponent = ({handleInput=()=>{}, object={}, method='', fieldName= '',options={} })=>{
     switch(fieldName){
         case 'kind':
         case 'country':
         case 'pet': 
         case 'vet': 
             return (
-                <Select 
-                    fieldName={fieldName}
-                    onChange={handleInput} 
-                    options={typesPets} 
-                    placeholder= {fieldName}
-                    method={method}
-                    value = {object[fieldName]}
-                />
+                <div className="col">
+                   {options[fieldName].length > 0 ? (
+
+                       <Select 
+                           fieldName={fieldName}
+                           onChange={handleInput} 
+                           options={options[fieldName]} 
+                           placeholder= {fieldName}
+                           method={method}
+                           value = {object[fieldName]}
+                       />
+                   ) : (
+                       "Cargando Opciones"
+                   )
+                   
+                    } 
+                </div>
             )
         case 'name':
         case 'owner': 
@@ -38,6 +55,7 @@ const FieldComponent = ({handleInput=()=>{}, object={}, method='', fieldName= ''
         case 'historia': 
         case 'diagnosis': 
             return (
+                <div className="col">
                 <Input 
                     method={method} 
                     value={object[fieldName]} 
@@ -46,8 +64,10 @@ const FieldComponent = ({handleInput=()=>{}, object={}, method='', fieldName= ''
                     fieldName = {fieldName}
                     placeholder= {fieldName}
                 />
+                </div>
             )
-        
+        default:
+                return false
     }
        
 
@@ -63,7 +83,8 @@ class Pagina extends Component{
             object : {},
             idObject : null,
             method : 'POST',
-            columns:[]
+            columns:[],
+            options: opcionesIniciales
         }
     }
 
@@ -88,16 +109,26 @@ class Pagina extends Component{
         this.setState({entity: entities, columns})
     }
 
-    handleInput = (e) => {
+    /* handleInput = (e) => {
         const {target: {value,name}} = e
-        //console.log({value, name, e})
+        console.log({value, name, e})
+        let {object} = this.state
+        object = {...object,[name]:value}
+        this.setState({object})*/
+       // console.log("objeto en el handle", object)
+
+    //}
+
+    handleInput = (e) => {
+        e.preventDefault()
+        const {target: {value,name}} = e
+        console.log({value, name, e});
         let {object} = this.state
         object = {...object,[name]:value}
         this.setState({object})
-
     }
 
-    createEntity = async () => {
+    createEntity = async (_e=null) => {
         const {entity} = this.props
         let {object, method, idObject} = this.state
         //console.log('este es el id en page', idObject)
@@ -132,8 +163,8 @@ class Pagina extends Component{
 
     render(){
         const {title = 'Empty Page'} = this.props // destructuracion donde se 
-        const {columns} = this.state
-        console.log(title, columns)
+        const {columns,options} = this.state
+        console.log("me renderizo")
         return (
         <>
         <div className="container-fluid">
@@ -142,19 +173,22 @@ class Pagina extends Component{
 
                 {this.state.mostrarModal && <ActionsMenu cambiarModal= {this.cambiarModal} titulo= {title}/>}
 
-                <Modal title={this.props.title} cambiarModal= {this.cambiarModal} createEntity={this.createEntity}>
-                    {columns.map((column,index)=>{ 
-                         
-                      return <FieldComponent key={index} handleInput={this.handleInput} object={this.state.object} method={this.state.method} fieldName = {column}/>
-                    }
-                    )}
-                    
-                
-                     
-                    
-                </Modal> 
+                <Modal objeto = {this.state.object} createEntity={this.createEntity} cambiarModal={this.cambiarModal} handleInput = {this.handleInput} method = {this.state.method} >
+                    {
+                        columns.map((column,index)=>(
+                            <FieldComponent
+                             options={this.state.options}   key={index} handleInput={this.handleInput} object={this.state.object} method={this.state.method} fieldName= {column} 
+                            />
+                        ))
+                    }    
+                </Modal>
 
-                <Table columns = {this.state.columns} deleteEntity={this.deleteEntity} editEntity = {this.editEntity} entity={this.state.entity}/>
+                <Table 
+                        columns = {this.state.columns} 
+                        deleteEntity={this.deleteEntity} 
+                        editEntity = {this.editEntity} 
+                        entity={this.state.entity}
+                />
 
             </div>
         </>    
@@ -214,3 +248,10 @@ export default Pagina
 Asi no s eputea
      * 
      */
+
+/**
+ {columns.map((column,index)=>{ 
+                         
+                      return <FieldComponent key={index} handleInput={this.handleInput} object={this.state.object} method={this.state.method} fieldName = {column}/>
+                    }
+ */

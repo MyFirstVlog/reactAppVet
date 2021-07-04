@@ -17,7 +17,7 @@ export default function Table(
   }
 ])*/
 
-  console.log('col',columns)
+  
     return <>
         <table  className="table table-dark table-stripped table-hover">
             <Header columns = {columns}/>            

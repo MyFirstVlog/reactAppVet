@@ -16,3 +16,11 @@ function App() {
 }
 
 export default App;
+/**
+ * <Switch>
+          <Route path="/" component={()=> <Pagina title='Pets' entity = 'pets' />} /> 
+          <Route path="/vets" component={()=> <Pagina title='Vets' entity = 'vets' />} />
+          <Route path="/owners" component={()=> <Pagina title='Owners' entity = 'owners' />} />
+          <Route path="/consults" component={()=> <Pagina title='Consults' entity = 'consults' />} />
+   </Switch>
+ */

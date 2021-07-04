@@ -10,7 +10,8 @@ export default function Select({method,value='', options = [], fieldName='empty'
             id={fieldName}
             className="form-select"
             name={fieldName}
-            value=''
+            
+            
             
           >
             <option value = ""> {placeholder} </option>
